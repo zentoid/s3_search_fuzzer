@@ -13,7 +13,7 @@ The main part of the bucket name you are searching for (e.g. CompanyName)
 
     -b, --base
 
-File tht contains terms to add to the main name above.
+File that contains terms to add to the main name above.
 
 Default: fuzz.txt
 
