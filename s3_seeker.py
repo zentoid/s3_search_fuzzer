@@ -35,24 +35,20 @@ write_to_file = args.write
 
 # Create file logger
 flog = logging.getLogger('s3seeker_file_log')
-flog.setLevel(logging.DEBUG)  # Set log level for logger object
+flog.setLevel(logging.DEBUG)
 
-# Create file handler which logs even debug messages
+# Create file handler
 fh = logging.FileHandler('{}.log'.format(log_file_name))
 fh.setLevel(logging.DEBUG)
 
 # Add the handler to logger
 flog.addHandler(fh)
 
-# Create secondary logger for logging to screen
+# Create secondary logger for logging to console
 stdoutlog = logging.getLogger('s3seeker_file_log_std_out')
 stdoutlog.setLevel(logging.INFO)
 
-# Logging levels for the screen logger:
-#   INFO  = found
-#   ERROR = not found
-# The levels serve no other purpose than to specify the output color
-
+# The levels here are used to set the console output color
 levelStyles = {
     'debug': {'color': 'orange'},
     'info': {'color': 'white'},
@@ -60,12 +56,12 @@ levelStyles = {
     'error': {'color': 'red'}
 }
 
-# this is nice if you want the time in a static color - not using at the moment
+# This is nice if you want the time in a static color - not using at the moment
 fieldStyles = {
     'asctime': {'color': 'white'}
 }
 
-# Use coloredlogs to add color to screen logger. Define format and styles.
+# Not using time in the output messages
 # coloredlogs.install(level='DEBUG', logger=stdoutlog, fmt='%(asctime)s - %(message)s', level_styles=levelStyles, field_styles=fieldStyles)
 coloredlogs.install(level='DEBUG', logger=stdoutlog, fmt='%(message)s', level_styles=levelStyles, field_styles=fieldStyles)
 
@@ -143,8 +139,10 @@ if __name__ == '__main__':
             separators_count = len(separators)
 
         _output_message(f'Starting checks on target \'{main_bucket_part}\', '
-                        f'loaded {fuzzers_count} fuzzer words from from {args.source_fuzzer_file} '
+                        f'loaded {fuzzers_count} fuzzer words from {args.source_fuzzer_file} '
                         f'and loaded {separators_count} separators from {args.source_separators_file}.', logging.INFO)
+
+        _output_message('THis may take a little while. Pleas wait...', logging.WARN)
 
         # check the base bucket
         if len(main_bucket_part) > 63:
